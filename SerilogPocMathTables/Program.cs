@@ -6,10 +6,13 @@ class Program
 {
     static void Main(string[] args)
     {
+        // Generate a unique log file name using a timestamp
+        string logFileName = $"logs/mathtables_{DateTime.Now:yyyyMMdd_HHmmss}.log";
+
         // Configure Serilog
         Log.Logger = new LoggerConfiguration()
             .WriteTo.Console()
-            .WriteTo.File("logs/mathtables.log", rollingInterval: RollingInterval.Day)
+            .WriteTo.File(logFileName)
             .CreateLogger();
 
         // Log startup information
@@ -29,6 +32,8 @@ class Program
             PrintMathTable(number);
             Thread.Sleep(5000); // Sleep for 5 seconds before printing the table again
         }
+
+        Log.CloseAndFlush(); // Ensure logs are flushed before application exit
     }
 
     static void PrintMathTable(int number)
